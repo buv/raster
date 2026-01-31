@@ -11,9 +11,11 @@ def main():
     parser = argparse.ArgumentParser(description='Erzeugt ein Linienraster-Halftone aus einem Graustufenbild.')
     parser.add_argument('input', help='Eingabebild (JPEG, PNG, etc.)')
     parser.add_argument('-o', '--output', default='output.png', help='Ausgabedatei (default: output.png)')
-    parser.add_argument('-a', '--autoscale', action='store_true', help='Tonwerte auf 0..255 normalisieren')
+    parser.add_argument('-n', '--normalize', action='store_true', help='Tonwerte auf 0..255 normalisieren')
     parser.add_argument('-g', '--gamma', type=float, default=1.0, help='Gamma-Korrektur (default: 1.0)')
     parser.add_argument('-d', '--dpi', type=int, default=300, help='Ausgabeauflösung (default: 300)')
+    parser.add_argument('-l', '--lpi', type=float, default=8, help='Linien pro Zoll (default: 8)')
+    parser.add_argument('-a', '--angle', type=float, default=-30, help='Rasterwinkel in Grad (default: -30)')
     parser.add_argument('-w', '--width', type=float, default=1500, help='Kleinere Ausdehnung in mm (default: 1500)')
     parser.add_argument('--min-gray', type=int, default=0, help='Minimaler Grauwert (default: 0)')
     parser.add_argument('--max-gray', type=int, default=255, help='Maximaler Grauwert (default: 255)')
@@ -24,8 +26,8 @@ def main():
     if args.red and args.blue:
         parser.error('--red und --blue können nicht gleichzeitig verwendet werden')
 
-    LPI = 8
-    ANGLE = -30
+    LPI = args.lpi
+    ANGLE = args.angle
 
     # RGB-Gewichtung für Graustufenkonvertierung
     base = np.array([0.299, 0.587, 0.114])
@@ -57,7 +59,7 @@ def main():
     pixels = np.array(img, dtype=np.float32)
 
     # 1. Autoscale
-    if args.autoscale:
+    if args.normalize:
         pmin, pmax = pixels.min(), pixels.max()
         print(f"Autoscale: {pmin:.0f}..{pmax:.0f} -> 0..255")
         if pmax > pmin:

@@ -2,10 +2,18 @@
 
 Erzeugt ein Linienraster-Halftone aus einem Graustufenbild mit kubischer Spline-Interpolation für glatte Linienmodulation.
 
+## Beispiel
+
+| Vorher | Nachher |
+|--------|---------|
+| ![Vorher](demo_before.png) | ![Nachher](demo_after.png) |
+
+[Vollständiges Ergebnis](demo_halftone.png)
+
 ## Features
 
 - Linienraster im -30° Winkel
-- 8 LPI (Lines Per Inch)
+- Einstellbare LPI (Lines Per Inch, default: 8)
 - Ausgabe: 150cm Breite bei 300 DPI (~17.700 Pixel)
 - Kubische Spline-Interpolation für weiche Übergänge
 - Optionale Tonwertspreizung und Gamma-Korrektur
@@ -31,9 +39,11 @@ python halftone.py <eingabebild> [optionen]
 | Option | Beschreibung |
 |--------|--------------|
 | `-o, --output` | Ausgabedatei (default: output.png) |
-| `-a, --autoscale` | Tonwerte auf 0..255 normalisieren |
+| `-n, --normalize` | Tonwerte auf 0..255 normalisieren |
 | `-g, --gamma` | Gamma-Korrektur (default: 1.0) |
 | `-d, --dpi` | Ausgabeauflösung (default: 300) |
+| `-l, --lpi` | Linien pro Zoll (default: 8) |
+| `-a, --angle` | Rasterwinkel in Grad (default: -30) |
 | `-w, --width` | Kleinere Ausdehnung in mm (default: 1500) |
 | `--min-gray` | Minimaler Grauwert (default: 0) |
 | `--max-gray` | Maximaler Grauwert (default: 255) |
@@ -55,13 +65,13 @@ Die Filter simulieren analoge SW-Fotografie-Filter:
 python halftone.py foto.jpg
 
 # Mit Autoscale
-python halftone.py foto.jpg -a
+python halftone.py foto.jpg -n
 
 # Mit Gamma-Korrektur (heller)
 python halftone.py foto.jpg -g 0.8 -o output_hell.png
 
 # Mit Rotfilter (dramatischer Himmel)
-python halftone.py foto.jpg --red 0.7 -a
+python halftone.py foto.jpg --red 0.7 -n
 
 # Kleinere Ausgabe für Plotter
 python halftone.py foto.jpg -w 500 -d 150
