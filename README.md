@@ -1,6 +1,6 @@
-# Linienraster-Halftone
+# Linienrasterer
 
-Erzeugt ein Linienraster-Halftone aus einem Graustufenbild mit kubischer Spline-Interpolation für glatte Linienmodulation.
+Erzeugt ein Linienraster aus einem Graustufenbild mit kubischer Spline-Interpolation für glatte Linienmodulation.
 
 ## Beispiel
 
@@ -12,7 +12,7 @@ Erzeugt ein Linienraster-Halftone aus einem Graustufenbild mit kubischer Spline-
 
 ## Features
 
-- Linienraster im -30° Winkel
+- Konfigurierbarer Rasterwinkel (default: -30°)
 - Einstellbare LPI (Lines Per Inch, default: 8)
 - Ausgabe: 150cm Breite bei 300 DPI (~17.700 Pixel)
 - Kubische Spline-Interpolation für weiche Übergänge
@@ -31,7 +31,7 @@ pip install -r requirements.txt
 
 ```bash
 source venv/bin/activate
-python halftone.py <eingabebild> [optionen]
+python raster.py <eingabebild> [optionen]
 ```
 
 ### Optionen
@@ -42,8 +42,8 @@ python halftone.py <eingabebild> [optionen]
 | `-n, --normalize` | Tonwerte auf 0..255 normalisieren |
 | `-g, --gamma` | Gamma-Korrektur (default: 1.0) |
 | `-d, --dpi` | Ausgabeauflösung (default: 300) |
-| `-l, --lpi` | Linien pro Zoll (default: 8) |
 | `-a, --angle` | Rasterwinkel in Grad (default: -30) |
+| `-l, --lpi` | Linien pro Zoll (default: 8) |
 | `-w, --width` | Kleinere Ausdehnung in mm (default: 1500) |
 | `--min-gray` | Minimaler Grauwert (default: 0) |
 | `--max-gray` | Maximaler Grauwert (default: 255) |
@@ -62,19 +62,19 @@ Die Filter simulieren analoge SW-Fotografie-Filter:
 
 ```bash
 # Standard
-python halftone.py foto.jpg
+python raster.py foto.jpg
 
 # Mit Autoscale
-python halftone.py foto.jpg -n
+python raster.py foto.jpg -n
 
 # Mit Gamma-Korrektur (heller)
-python halftone.py foto.jpg -g 0.8 -o output_hell.png
+python raster.py foto.jpg -g 0.8 -o output_hell.png
 
 # Mit Rotfilter (dramatischer Himmel)
-python halftone.py foto.jpg --red 0.7 -n
+python raster.py foto.jpg --red 0.7 -n
 
 # Kleinere Ausgabe für Plotter
-python halftone.py foto.jpg -w 500 -d 150
+python raster.py foto.jpg -w 500 -d 150
 ```
 
 ## Verarbeitungsreihenfolge
