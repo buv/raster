@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.png
+*.pbm
+*.pgm
+*.ps
+.DS_Store
