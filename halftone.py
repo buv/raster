@@ -17,12 +17,29 @@ def main():
     parser.add_argument('-w', '--width', type=float, default=1500, help='Kleinere Ausdehnung in mm (default: 1500)')
     parser.add_argument('--min-gray', type=int, default=0, help='Minimaler Grauwert (default: 0)')
     parser.add_argument('--max-gray', type=int, default=255, help='Maximaler Grauwert (default: 255)')
+    parser.add_argument('--red', type=float, default=0, help='Rotfilter-Intensität 0..1 (default: 0)')
+    parser.add_argument('--blue', type=float, default=0, help='Blaufilter-Intensität 0..1 (default: 0)')
     args = parser.parse_args()
+
+    if args.red and args.blue:
+        parser.error('--red und --blue können nicht gleichzeitig verwendet werden')
 
     LPI = 8
     ANGLE = -30
 
-    img = Image.open(args.input).convert('L')
+    # RGB-Gewichtung für Graustufenkonvertierung
+    base = np.array([0.299, 0.587, 0.114])
+    if args.red:
+        weights = base + args.red * (np.array([1, 0, 0]) - base)
+    elif args.blue:
+        weights = base + args.blue * (np.array([0, 0, 1]) - base)
+    else:
+        weights = base
+
+    img_rgb = Image.open(args.input).convert('RGB')
+    img = np.array(img_rgb, dtype=np.float32)
+    img = img[:,:,0] * weights[0] + img[:,:,1] * weights[1] + img[:,:,2] * weights[2]
+    img = Image.fromarray(img.astype(np.uint8), mode='L')
     
     # Ausgabegröße berechnen: width ist die kleinere Dimension
     width_px = int(args.width / 25.4 * args.dpi)
