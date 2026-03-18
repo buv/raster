@@ -38,7 +38,7 @@ python raster.py <eingabebild> [optionen]
 
 | Option | Beschreibung |
 |--------|--------------|
-| `-o, --output` | Ausgabedatei (default: output.png) |
+| `-o, --output` | Ausgabedatei, PNG oder PDF (default: output.png) |
 | `-n, --normalize` | Tonwerte auf 0..255 normalisieren |
 | `-g, --gamma` | Gamma-Korrektur (default: 1.0) |
 | `-d, --dpi` | Ausgabeauflösung (default: 300) |
@@ -75,6 +75,9 @@ python raster.py foto.jpg --red 0.7 -n
 
 # Kleinere Ausgabe für Plotter
 python raster.py foto.jpg -w 500 -d 150
+
+# PDF-Ausgabe
+python raster.py foto.jpg -o output.pdf
 ```
 
 ## Verarbeitungsreihenfolge
@@ -86,6 +89,7 @@ python raster.py foto.jpg -w 500 -d 150
 
 ## Ausgabe
 
-- Format: PNG, 1-bit Schwarzweiß
+- Format: PNG oder PDF (1-bit Schwarzweiß), abhängig von der Dateiendung bei `-o`
+- Bei PDF wird die DPI-Auflösung eingebettet, sodass die physischen Maße korrekt sind
 - Größe: Abhängig von `-w` und `-d`
 - Default: ~17.700 × proportionale Höhe Pixel (150cm bei 300 DPI)

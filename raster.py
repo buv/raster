@@ -134,7 +134,11 @@ def main():
         if i % 100 == 0:
             print(f"  Linie {i}/{num_lines}")
 
-    canvas.save(args.output)
+    save_kwargs = {}
+    if args.output.lower().endswith('.pdf'):
+        save_kwargs['resolution'] = args.dpi
+
+    canvas.save(args.output, **save_kwargs)
     print(f"Gespeichert: {args.output}")
 
 if __name__ == '__main__':
